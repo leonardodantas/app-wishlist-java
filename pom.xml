@@ -11,8 +11,8 @@
 	<groupId>com.br</groupId>
 	<artifactId>wishlist</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>app-wishlist-java</name>
-	<description>Online Commerce Wish List Application</description>
+	<name>App-wishlist-java</name>
+	<description>E-Commerce WishList Application</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
