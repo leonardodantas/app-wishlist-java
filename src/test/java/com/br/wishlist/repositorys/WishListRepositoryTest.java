@@ -1,8 +1,9 @@
 package com.br.wishlist.repositorys;
 
-import com.br.wishlist.models.entitys.Product;
-import com.br.wishlist.models.entitys.WishList;
-import com.br.wishlist.repositorys.impl.WishListRepository;
+import com.br.wishlist.domain.Product;
+import com.br.wishlist.domain.WishList;
+import com.br.wishlist.infra.database.WishListRepository;
+import com.br.wishlist.infra.database.WishListSpringData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -29,7 +30,7 @@ public class WishListRepositoryTest {
         String customerId = "1";
 
         when(wishListSpringData.findByCustomerId(customerId))
-                .thenReturn(Optional.of(WishList.builder().customerId(customerId).build()));
+                .thenReturn(Optional.of(new WishList()));
 
         Optional<WishList> wishList = wishListRepository.findByCustomerId(customerId);
         assertEquals(customerId, wishList.get().getCustomerId());
@@ -39,8 +40,8 @@ public class WishListRepositoryTest {
     public void testSave(){
 
         String id = "1";
-        WishList wishListSave = WishList.builder().id(id).build();
-
+//        WishList wishListSave = WishList.builder().id(id).build();
+        WishList wishListSave = new WishList();
         when(wishListSpringData.save(wishListSave))
                 .thenReturn(wishListSave);
 

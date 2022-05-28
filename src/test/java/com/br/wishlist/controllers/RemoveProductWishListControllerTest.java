@@ -1,7 +1,7 @@
 package com.br.wishlist.controllers;
 
-import com.br.wishlist.controllers.impl.RemoveProductWishListController;
-import com.br.wishlist.services.IRemoveProductWishListService;
+import com.br.wishlist.infra.controllers.RemoveProductWishListController;
+import com.br.wishlist.app.usecases.IRemoveProduct;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +24,7 @@ public class RemoveProductWishListControllerTest {
     private RemoveProductWishListController removeProductWishListController;
 
     @Mock
-    private IRemoveProductWishListService removeProductWishListService;
+    private IRemoveProduct removeProductWishListService;
 
     private MockMvc mockMvc;
 
@@ -36,7 +36,7 @@ public class RemoveProductWishListControllerTest {
     @Test
     public void testRemoveProduct() throws Exception {
 
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("customerId", "1");
         params.add("productId", "12");
 

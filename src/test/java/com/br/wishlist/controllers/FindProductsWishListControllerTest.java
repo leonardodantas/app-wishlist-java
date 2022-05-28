@@ -1,9 +1,8 @@
 package com.br.wishlist.controllers;
 
-import com.br.wishlist.controllers.impl.FindProductsWishListController;
-import com.br.wishlist.models.entitys.WishList;
-import com.br.wishlist.models.response.WishListResponseDTO;
-import com.br.wishlist.services.IFindProductsWishListService;
+import com.br.wishlist.infra.controllers.FindProductsWishListController;
+import com.br.wishlist.domain.WishList;
+import com.br.wishlist.app.usecases.IFindWishlistCustomer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +14,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,7 +28,7 @@ public class FindProductsWishListControllerTest {
     private FindProductsWishListController findProductsWishListController;
 
     @Mock
-    private IFindProductsWishListService findProductsWishListService;
+    private IFindWishlistCustomer findProductsWishListService;
 
     private MockMvc mockMvc;
 
@@ -37,12 +38,12 @@ public class FindProductsWishListControllerTest {
     }
 
     @Test
-    public void testFindAllProducts() throws Exception {
+    public void testFindWishlist() throws Exception {
 
-        String customerId = "1";
+        final var customerId = "1";
 
-        WishListResponseDTO response = WishListResponseDTO.from(WishList.builder().id("1").products(new ArrayList<>()).build());
-        when(findProductsWishListService.findAllProducts(customerId)).thenReturn(response);
+        final var wishlist = new WishList("1", "10", BigDecimal.valueOf(100), 10, List.of());
+        when(findProductsWishListService.execute(customerId)).thenReturn(Optional.of(wishlist));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/v1/find/customer/" + customerId + "/products")
                 .accept(MediaType.APPLICATION_JSON)
@@ -52,12 +53,11 @@ public class FindProductsWishListControllerTest {
     }
 
     @Test
-    public void testFindAllProductsWhereNoContent() throws Exception {
+    public void testFindWishlistNoContent() throws Exception {
 
-        String customerId = "1";
+        final var customerId = "1";
 
-        WishListResponseDTO response = WishListResponseDTO.from(WishList.builder().products(new ArrayList<>()).build());
-        when(findProductsWishListService.findAllProducts(customerId)).thenReturn(response);
+        when(findProductsWishListService.execute(customerId)).thenReturn(Optional.empty());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/v1/find/customer/" + customerId + "/products")
                 .accept(MediaType.APPLICATION_JSON)
@@ -66,15 +66,15 @@ public class FindProductsWishListControllerTest {
 
     }
 
-    @Test
-    public void testCheckIfTheProductExistsInTheCustomersWishList() throws Exception {
-
-        String customerId = "1";
-        String productId = "2";
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/v1/find/customer/" + customerId + "/product/" + productId)
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk());
-    }
+//    @Test
+//    public void testCheckIfTheProductExistsInTheCustomersWishList() throws Exception {
+//
+//        String customerId = "1";
+//        String productId = "2";
+//
+//        mockMvc.perform(MockMvcRequestBuilders.get("/v1/find/customer/" + customerId + "/product/" + productId)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .contentType(MediaType.APPLICATION_JSON)
+//        ).andExpect(status().isOk());
+//    }
 }
